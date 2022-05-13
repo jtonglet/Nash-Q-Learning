@@ -39,6 +39,12 @@ Q0, Q1 = nashQ.fit(return_history = False)
 p0, p1 = nashQ.get_best_policy(Q0,Q1)
 ```
 
+```python
+print('Player 0 follows the  policy : %s of length %s' %('-'.join(p0),len(p0)))
+print('Player 1 follows the  policy : %s of length %s'%('-'.join(p1),len(p1)))
+>>> Player 0 follows the  policy : up-up-right of length 3
+>>>Player 1 follows the  policy : up-up-left of length 3
+```
 
 ## Installation
 
