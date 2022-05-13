@@ -6,6 +6,39 @@ The Nash Q Learning algorithm was introduced in the paper [**Nash q-learning for
 ![](img/img1.PNG)
 
 
+## Solve the game with Nash Q Learning 
+
+Prepare the grid 
+
+```python
+#Initialize the two players
+player1 = Player([0,0])
+player2 = Player([2,0])
+#Initialize the grid
+grid = Grid(length = 3,
+            width = 3,
+            players = [player1,player2],
+           obstacle_coordinates = [[1,1]], #A single obstacle in the middle of the grid
+           reward_coordinates = [1,2],
+           reward_value = 20,
+           collision_penalty = -1)
+```
+
+Train the Nash Q Learning algo 
+
+```python
+nashQ = NashQLearning(grid, 
+                      max_iter = 2000,
+                      discount_factor = 0.7,
+                      learning_rate = 0.7,
+                      epsilon = 0.5,
+                     decision_strategy = 'epsilon-greedy')
+#Retrieve the updated Q tables after fitting the algorithm
+Q0, Q1 = nashQ.fit(return_history = False)
+#Best path followed by each player given the values in the Q tables
+p0, p1 = nashQ.get_best_policy(Q0,Q1)
+```
+
 
 ## Installation
 
@@ -13,6 +46,8 @@ The Nash Q Learning algorithm was introduced in the paper [**Nash q-learning for
 This repository requires Python 3.8. Requirements and dependencies can be installed using the following command.
   
  ```
+ git clone https://github.com/jtonglet/Nash_Q_Learning.git
+ cd Nash_Q_Learning
  pip install -r requirements.txt
  ```
   </p>
