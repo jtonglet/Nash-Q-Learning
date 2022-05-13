@@ -1,0 +1,5 @@
+numpy
+random
+collections
+tqdm 
+nashpy
