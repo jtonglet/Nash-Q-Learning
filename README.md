@@ -55,18 +55,17 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 ![](img/img2.PNG)
 
 
-## Installation
+## Requirements
 
 <p align="justify">
-This repository requires Python 3.8. Requirements and dependencies can be installed using the following command.
-  
- ```
- git clone https://github.com/jtonglet/Nash_Q_Learning.git
- cd Nash_Q_Learning
- pip install -r requirements.txt
- ```
+- 'python>+3.7'
+- 'numpy'
+- random
+- tqdm
+- collections
+- nashpy
   </p>
   
-
+Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
 
 
