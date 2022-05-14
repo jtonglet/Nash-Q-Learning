@@ -7,7 +7,7 @@ The Nash Q Learning algorithm was introduced in the paper [**Nash q-learning for
 
 ## Example
 
-Consider the following game where two robots need to reach the trophee. There is one obstacle in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile.
+Consider the following game where two robots need to reach the trophee. There is one obstacle in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) to retrieve all the code used to solve the game.
 ![](img/img1.PNG)
 
 
