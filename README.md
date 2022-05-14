@@ -1,13 +1,15 @@
 # Nash Q Learning 
 
 Implementation of the Nash Q Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ Politecnico di Milano. 
-The Nash Q Learning algorithm was introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
+The Nash Q Learning algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
+
+$ Q(a,s,s') \leftarrow  (1-\alpha) \; Q(a,s,s')  + \alpha \; \[R(s') + \gamma \: Nash(Q(s')\] $ 
 
 
 
 ## Example
 
-Consider the following game where two robots need to reach the trophee. There is one obstacle in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) to retrieve all the code used to solve the game.
+Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) for a detailed explanation of this example.
 
 
 ![](img/img1.PNG)
@@ -24,13 +26,13 @@ player2 = Player([2,0])
 grid = Grid(length = 3,
             width = 3,
             players = [player1,player2],
-           obstacle_coordinates = [[1,1]], #A single obstacle in the middle of the grid
-           reward_coordinates = [1,2],
-           reward_value = 20,
-           collision_penalty = -1)
+            obstacle_coordinates = [[1,1]], 
+            reward_coordinates = [1,2],
+            reward_value = 20,
+            collision_penalty = -1)
 ```
 
-Train the Nash Q Learning algo 
+Once the game settings are defined, a NashQLearning object is initialized with the desired hyperparameters and trained on the grid. Available strategies are 'random', 'greedy', and 'epsilon-greedy'.
 
 ```python
 from NashQLearn import NashQLearning
