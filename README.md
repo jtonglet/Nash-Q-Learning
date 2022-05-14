@@ -37,7 +37,7 @@ nashQ = NashQLearning(grid,
                       discount_factor = 0.7,
                       learning_rate = 0.7,
                       epsilon = 0.5,
-                     decision_strategy = 'epsilon-greedy')
+                      decision_strategy = 'epsilon-greedy')
 #Retrieve the updated Q tables after fitting the algorithm
 Q0, Q1 = nashQ.fit(return_history = False)
 #Best path followed by each player given the values in the Q tables
@@ -56,12 +56,14 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 ## Requirements
 
 <p align="justify">
+            
 - 'python>+3.7'
 - 'numpy'
 - random
 - tqdm
 - collections
 - nashpy
+            
   </p>
   
 Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
