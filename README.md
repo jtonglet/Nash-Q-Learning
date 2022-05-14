@@ -8,6 +8,8 @@ The Nash Q Learning algorithm was introduced in the paper [**Nash q-learning for
 ## Example
 
 Consider the following game where two robots need to reach the trophee. There is one obstacle in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) to retrieve all the code used to solve the game.
+
+
 ![](img/img1.PNG)
 
 
@@ -42,10 +44,8 @@ nashQ = NashQLearning(grid,
 Q0, Q1 = nashQ.fit(return_history = False)
 #Best path followed by each player given the values in the Q tables
 p0, p1 = nashQ.get_best_policy(Q0,Q1)
-```
 
-
-```python
+#Show the results
 print('Player 0 follows the  policy : %s of length %s.'%('-'.join(p0),len(p0)))
 >>> Player 0 follows the  policy : up-up-right of length 3.
 print('Player 1 follows the  policy : %s of length %s.'%('-'.join(p1),len(p1)))
