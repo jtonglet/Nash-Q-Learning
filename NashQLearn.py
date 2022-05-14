@@ -2,13 +2,13 @@
 Implementation of the Nash Q Learning algorithm for simple games with two agents
 '''
 
-
 import numpy as np
 import random
 random.seed(42)
 from collections import defaultdict
 import nashpy as nash
 from tqdm import tqdm
+
 
 class Player:
 
@@ -22,7 +22,6 @@ class Player:
     movements (list) : list of strings containing the possible movements. Invalid string values are considered as the 'stay' movement
     position (list) : list of two integers giving the starting position coordinates of the player
     '''
-
     def move(self, movement):
         if movement == 'left'  and 'left' in self.movements:
             new_position = [self.position[0] - 1, self.position[1]]
@@ -37,6 +36,7 @@ class Player:
         
         return new_position
 
+    
 class Grid:
 
     def __init__(self,
@@ -61,7 +61,6 @@ class Grid:
         collision_penalty (int)  : negative reward obtained for hitting a wall or colliding with another player
         joint_player_coordinates (list) : list containing the starting positions of the two players
         '''
-
         self.length = length
         self.width = width
         self.players =  players
@@ -71,13 +70,6 @@ class Grid:
         self.collision_allowed = collision_allowed
         self.collision_penalty =  collision_penalty
         self.joint_player_coordinates = [players[0].position, players[1].position]
-    
-
-    def get_reward_value(self):
-        return self.reward_value
-    
-    def get_collision_penalty(self):
-        return self.collision_penalty
     
     def get_player_0(self):
         return self.players[0]
@@ -107,7 +99,6 @@ class Grid:
 
         return joint_states
                              
-
     def identify_walls(self):
         '''
         Identify all impossible transitions due to the grid walls and the obstacles
@@ -128,7 +119,6 @@ class Grid:
 
         return walls
     
-
     def compute_reward(self,
                        old_state,
                        new_state,
@@ -167,31 +157,24 @@ class Grid:
                         if [m0,state[0]]  in walls or state[0] == self.reward_coordinates:
                             new_state = state
                         else : 
-                            new_state = [Player(state[0]).move(m0),state[1]]
-                            
+                            new_state = [Player(state[0]).move(m0),state[1]]                            
                     else:
                         if [m0,state[0]] in walls or state[0] == self.reward_coordinates:
                             new_state = [state[0],Player(state[1]).move(m1)]
                         else:
-                            new_state = [Player(state[0]).move(m0),Player(state[1]).move(m1)]
-                    
+                            new_state = [Player(state[0]).move(m0),Player(state[1]).move(m1)]                   
                     if (new_state[0] == state[1]  and new_state[1] == state[0] ) or new_state not in joint_states: 
                         # There is a collision or a swap of positions
-                         new_state = state #Return to previous state
-                    
-
+                         new_state = state #Return to previous state  
                     transitions[joint_states.index(state)][m0][m1] = joint_states.index(new_state)
-
+                    
         return transitions
-
-
 
     def create_stage_games(self):
         '''
         Creates the stage game tables which contains the reward obtained by the players for each pair of joint states and joint movements.
         The stage game tables are represented as 3-dimensional tensors. 
         '''
-
         joint_states = self.joint_states()
         walls = self.identify_walls()
         player0_movements =  self.players[0].movements
@@ -218,8 +201,7 @@ class Grid:
                         if  [m0,state[0]] in walls:
                             new_state = [state[0],Player(state[1]).move(m1)]
                         else:
-                            new_state = [Player(state[0]).move(m0),Player(state[1]).move(m1)]
-                    
+                            new_state = [Player(state[0]).move(m0),Player(state[1]).move(m1)]                    
                     collision_detected = False
                     if (new_state[0] == state[1]  and new_state[1] == state[0] ) or new_state not in joint_states: 
                         # There is a collision
@@ -227,14 +209,11 @@ class Grid:
                          collision_detected = True
                 
                     reward0 = self.compute_reward(state[0],new_state[0],m0,collision_detected)
-                    reward1 = self.compute_reward(state[1],new_state[1],m1,collision_detected)
-                     
+                    reward1 = self.compute_reward(state[1],new_state[1],m1,collision_detected)                     
                     stage_games0[joint_states.index(state)] [player0_movements.index(m0)][player1_movements.index(m1)]= reward0
                     stage_games1[joint_states.index(state)][player0_movements.index(m0)][player1_movements.index(m1)] = reward1
-                
-        
+                  
         return stage_games0, stage_games1
-
 
     def create_q_tables(self): 
         '''
@@ -242,23 +221,18 @@ class Grid:
         The q tables are represented as 3-dimensional tensors and are initialized with null values. 
         '''
         joint_states = self.joint_states()
-
         player0_movements =  self.players[0].movements
         player1_movements =  self.players[1].movements
-
         q_tables0 = np.zeros((len(joint_states),
                               len(player0_movements),
                               len(player1_movements)
-                                    ))
-        
+                                    ))    
         q_tables1 = np.zeros((len(joint_states),
                               len(player0_movements),
                               len(player1_movements)
                                     ))
         
         return q_tables0, q_tables1
-
-
 
 
 class  NashQLearning:
@@ -269,8 +243,7 @@ class  NashQLearning:
                  max_iter = 100,
                  discount_factor = 0.7,
                  decision_strategy = 'random',
-                 epsilon = 0.5): 
-        
+                 epsilon = 0.5):       
         '''
         grid (Grid) : the game grid 
         learning rate (int) : the weighted importance given to the update of the Q-values compared to their current value
@@ -285,9 +258,7 @@ class  NashQLearning:
         self.discount_factor = discount_factor
         self.decision_strategy = decision_strategy
         self.epsilon = epsilon
-    
-
-    
+        
 
     def fit(self,
             return_history = False):
@@ -298,19 +269,15 @@ class  NashQLearning:
         player1_movements =  self.grid.players[1].movements
         stage_games0, stage_games1 = self.grid.create_stage_games()
         Q0, Q1 = self.grid.create_q_tables()
-        transition_table = self.grid.create_transition_table()
-        
+        transition_table = self.grid.create_transition_table()    
         state_tracker = [current_state]
+        
         for i in tqdm(range(self.max_iter)):
-  
-
             if current_state == joint_states[-1]:  #Both players reached the reward, return to original position
                 current_state = [self.grid.players[0].position,self.grid.players[1].position]
-
             if self.decision_strategy == 'random':
                 m0 = player0_movements[random.randrange(len(player0_movements))]
                 m1 = player1_movements[random.randrange(len(player1_movements))]
-
             if self.decision_strategy == 'greedy':
                 greedy_matrix0 = Q0[joint_states.index(current_state)]
                 greedy_matrix1 = Q1[joint_states.index(current_state)]
@@ -323,8 +290,6 @@ class  NashQLearning:
                 else:  #Select the movements corresponding to the nash equilibrium
                     m0 = player0_movements[np.where(greedy_equilibrium[0] == 1)[0][0]]
                     m1 = player1_movements[np.where(greedy_equilibrium[1] == 1)[0][0]]
-
-
             if self.decision_strategy == 'epsilon-greedy':
                 random_number = random.uniform(0,1)
                 if random_number >= self.epsilon: #greedy
@@ -339,19 +304,16 @@ class  NashQLearning:
                     else:  #Select the movements corresponding to the nash equilibrium
                         # print(np.where(greedy_equilibrium[0] == 1))
                         m0 = player0_movements[np.where(greedy_equilibrium[0] == 1)[0][0]]
-                        m1 = player1_movements[np.where(greedy_equilibrium[1] == 1)[0][0]]
-                
+                        m1 = player1_movements[np.where(greedy_equilibrium[1] == 1)[0][0]]          
                 else: #random
                     m0 = player0_movements[random.randrange(len(player0_movements))]
                     m1 = player1_movements[random.randrange(len(player1_movements))]
               
-
             #Update state
             new_state = joint_states[transition_table[joint_states.index(current_state)][m0][m1]]
             #Solve Nash equilibrium problem in new state
             nash_eq_matrix0 = Q0[joint_states.index(new_state)]
             nash_eq_matrix1 = Q1[joint_states.index(new_state)]
-
             game = nash.Game(nash_eq_matrix0,nash_eq_matrix1)
             equilibriums = list(game.support_enumeration())
             best_payoff = -np.Inf
@@ -361,11 +323,8 @@ class  NashQLearning:
                 if payoff >= best_payoff:
                     best_payoff = payoff
                     equilibrium_values = game[eq]
-                    
-            
-            # random_equilibrium = equilibriums[random.randrange(len(equilibriums))] #If there are more than one equilibrium take one at random
-
-            
+                          
+            #Q Tables update formula
             Q0[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)] = (
                 (1 - self.learning_rate) * Q0[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)]
                 + self.learning_rate * (stage_games0[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)]
@@ -376,18 +335,12 @@ class  NashQLearning:
                 (1 - self.learning_rate) * Q1[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)]
                 + self.learning_rate * (stage_games1[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)]
                                         + self.discount_factor * equilibrium_values[1])
-            )
-             
+            )             
             current_state = new_state
-            state_tracker.append(current_state)
-        
+            state_tracker.append(current_state)   
         if return_history:
             print(state_tracker)
         return Q0, Q1
-
-
-
-
 
     def get_best_policy(self,
                            Q0,
@@ -416,8 +369,7 @@ class  NashQLearning:
                                                         #payoff is better and at least one agent is moving
                          best_payoff = total_payoff
                          m0 = player0_movements[np.where(eq[0]==1)[0][0]]
-                         m1 = player1_movements[np.where(eq[1]==1)[0][0]]
-            
+                         m1 = player1_movements[np.where(eq[1]==1)[0][0]]           
             if current_state[0] != joint_states[-1][0]:
                 policy0.append(m0)
             else : #target reached for player 0
@@ -426,36 +378,12 @@ class  NashQLearning:
                 policy1.append(m1)
             else: #target reached for player 1
                 policy1.append('stay')
-
-
             if current_state != joint_states[transition_table[joint_states.index(current_state)][m0][m1]]: #there was a movement
                 current_state = joint_states[transition_table[joint_states.index(current_state)][m0][m1]]
             else :  #No movement, the model did not converge
                 policy0 = 'model failed to converge to a policy'
                 policy1 = 'model failed to converge to a policy'
-                break
-        
+                break        
         print(current_state)
             
         return policy0, policy1
-
-  
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
