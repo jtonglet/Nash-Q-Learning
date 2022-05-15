@@ -16,12 +16,13 @@ class Player:
                  position = [0,0],
                  movements = ['left','right','up','down','stay']
                 ):
+            '''
+            movements (list) : list of strings containing the possible movements. Invalid string values are considered as the 'stay' movement
+            position (list) : list of two integers giving the starting position coordinates of the player
+            '''
         self.movements = movements
         self.position = position
-    '''
-    movements (list) : list of strings containing the possible movements. Invalid string values are considered as the 'stay' movement
-    position (list) : list of two integers giving the starting position coordinates of the player
-    '''
+
     def move(self, movement):
         if movement == 'left'  and 'left' in self.movements:
             new_position = [self.position[0] - 1, self.position[1]]
