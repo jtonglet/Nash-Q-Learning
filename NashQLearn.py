@@ -4,7 +4,6 @@ Implementation of the Nash Q Learning algorithm for simple games with two agents
 
 import numpy as np
 import random
-random.seed(42)
 from collections import defaultdict
 import nashpy as nash
 from tqdm import tqdm
@@ -17,13 +16,18 @@ class Player:
                  movements = ['left','right','up','down','stay']
                 ):
             '''
-            movements (list) : list of strings containing the possible movements. Invalid string values are considered as the 'stay' movement
+            movements (list) : list of strings containing the possible movements. 
             position (list) : list of two integers giving the starting position coordinates of the player
             '''
         self.movements = movements
         self.position = position
 
+        
     def move(self, movement):
+        '''
+        Compute the new position of a player after performing a movement.
+        movement (string) : the movement to perform. Invalid string values are interpreted as the 'stay' movement.     
+        '''
         if movement == 'left'  and 'left' in self.movements:
             new_position = [self.position[0] - 1, self.position[1]]
         elif movement == 'right' and 'right' in self.movements:
@@ -32,12 +36,13 @@ class Player:
             new_position = [self.position[0], self.position[1] + 1]
         elif movement == 'down' and 'down' in self.movements:
             new_position = [self.position[0], self.position[1] - 1]
-        else:
+        else:  
             new_position = self.position
         
         return new_position
 
-    
+   
+
 class Grid:
 
     def __init__(self,
@@ -71,13 +76,16 @@ class Grid:
         self.collision_allowed = collision_allowed
         self.collision_penalty =  collision_penalty
         self.joint_player_coordinates = [players[0].position, players[1].position]
-    
+ 
+
     def get_player_0(self):
         return self.players[0]
+
     
     def get_player_1(self):
         return self.players[1]
-    
+  
+
     def joint_states(self):
         '''
         Returns a list of all possible joint states in the game.
@@ -99,7 +107,8 @@ class Grid:
             ]
 
         return joint_states
-                             
+ 
+
     def identify_walls(self):
         '''
         Identify all impossible transitions due to the grid walls and the obstacles
@@ -119,7 +128,8 @@ class Grid:
                         walls.append(['down',fictious_player.position])
 
         return walls
-    
+ 
+
     def compute_reward(self,
                        old_state,
                        new_state,
@@ -140,6 +150,7 @@ class Grid:
             reward = 0
         return reward
 
+    
     def create_transition_table(self):
         '''
         Creates a dictionary where each pair of joint state and joint movement is mapped to a new resulting joint state
@@ -171,6 +182,7 @@ class Grid:
                     
         return transitions
 
+    
     def create_stage_games(self):
         '''
         Creates the stage game tables which contains the reward obtained by the players for each pair of joint states and joint movements.
@@ -216,6 +228,7 @@ class Grid:
                   
         return stage_games0, stage_games1
 
+    
     def create_q_tables(self): 
         '''
         Creates the q tables which contains the Q-values used by the the nash Q Learning algorithm.
@@ -236,6 +249,7 @@ class Grid:
         return q_tables0, q_tables1
 
 
+    
 class  NashQLearning:
 
     def __init__(self,
@@ -244,7 +258,8 @@ class  NashQLearning:
                  max_iter = 100,
                  discount_factor = 0.7,
                  decision_strategy = 'random',
-                 epsilon = 0.5):       
+                 epsilon = 0.5,
+                 random_state = 42):       
         '''
         grid (Grid) : the game grid 
         learning rate (int) : the weighted importance given to the update of the Q-values compared to their current value
@@ -252,6 +267,7 @@ class  NashQLearning:
         discount_factor (int) : discount factor applied to the nash equilibria value in the Q-values update formula
         decision_strategy (str) : decision strategy applied to select the next movement, possible values are 'random','greedy','epsilon-greedy'
         epsilon (int) : only if decision_strategy is 'epsilon_greedy', threshold to decide between a greedy or random movement
+        random_state (int) : seed for results reproducibility
         '''
         self.grid = grid
         self.learning_rate = learning_rate
@@ -259,11 +275,15 @@ class  NashQLearning:
         self.discount_factor = discount_factor
         self.decision_strategy = decision_strategy
         self.epsilon = epsilon
+        random.seed(random_state)
         
 
     def fit(self,
             return_history = False):
-
+        """
+        Fit the Nash Q Learning algorithm on the grid and return one Q table per player. 
+        return_history (bool) : if True, print all the changing positions of the players on the grid during the learning cycle.
+        """
         current_state = [self.grid.players[0].position,self.grid.players[1].position]
         joint_states = self.grid.joint_states()
         player0_movements =  self.grid.players[0].movements
@@ -276,6 +296,7 @@ class  NashQLearning:
         for i in tqdm(range(self.max_iter)):
             if current_state == joint_states[-1]:  #Both players reached the reward, return to original position
                 current_state = [self.grid.players[0].position,self.grid.players[1].position]
+                
             if self.decision_strategy == 'random':
                 m0 = player0_movements[random.randrange(len(player0_movements))]
                 m1 = player1_movements[random.randrange(len(player1_movements))]
@@ -337,15 +358,21 @@ class  NashQLearning:
                 + self.learning_rate * (stage_games1[joint_states.index(current_state)][player0_movements.index(m0)][player1_movements.index(m1)]
                                         + self.discount_factor * equilibrium_values[1])
             )             
+            
             current_state = new_state
             state_tracker.append(current_state)   
+            
         if return_history:
             print(state_tracker)
         return Q0, Q1
 
+    
     def get_best_policy(self,
                            Q0,
                            Q1):
+        """
+        Given two Q tables, one for each agent, return their best available path on the grid.
+        """
         current_state = [self.grid.players[0].position,self.grid.players[1].position]
         joint_states = self.grid.joint_states()
         transition_table = self.grid.create_transition_table()
