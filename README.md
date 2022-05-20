@@ -1,6 +1,6 @@
 # Nash Q Learning 
 
-Implementation of the Nash Q Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ Polimi. 
+Implementation of the Nash Q Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ PoliMi. 
 The Nash Q Learning algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
 
 ## Example
