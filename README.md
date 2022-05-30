@@ -1,11 +1,11 @@
 # Nash Q Learning 
 
 Implementation of the Nash Q Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ PoliMi. 
-The Nash Q Learning algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
+The algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
 
 ## Example
 
-Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) for a detailed explanation walkthrough.
+Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two agents cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) for a detailed walkthrough.
 
 
 ![](img/img1.PNG)
