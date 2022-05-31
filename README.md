@@ -57,7 +57,7 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 
 <p align="justify">
             
-- 'python>+3.7'
+- 'python>=3.7'
 - 'numpy'
 - random
 - tqdm
