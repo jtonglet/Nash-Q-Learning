@@ -55,16 +55,14 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 
 ## Requirements
 
-<p align="justify">
-            
-- 'python>=3.7'
-- 'numpy'
+         
+- python>=3.7
+- numpy
 - random
 - tqdm
 - collections
 - nashpy
             
-  </p>
   
 Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
 
