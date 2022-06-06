@@ -5,7 +5,7 @@ The algorithm was first introduced in the paper [**Nash q-learning for general-s
 
 ## Example
 
-Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two robots cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/3-dim-example.ipynb) for a detailed walkthrough.
+Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two robots cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/notebook/3-dim-example.ipynb) for a detailed walkthrough.
 
 
 ![](img/img1.PNG)
@@ -54,16 +54,12 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 
 
 ## Requirements
-
-         
+      
 - python>=3.7
 - numpy
 - random
 - tqdm
 - collections
 - nashpy
-            
-  
+              
 Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
-
-
