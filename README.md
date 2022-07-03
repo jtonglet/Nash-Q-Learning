@@ -1,11 +1,11 @@
 # Nash Q Learning 
 
-Implementation of the Nash Q Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ PoliMi. 
+Implementation of the Nash Q-Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ PoliMi. 
 The algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
 
 ## Example
 
-Consider the following game where two robots need to reach the trophee. One obstacle lies in the middle of the grid. The two robots cannot be on the same tile at the same moment, except for the trophee's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/notebook/3-dim-example.ipynb) for a detailed walkthrough.
+Consider the following game where two robots need to reach the reward. One obstacle lies in the middle of the grid. The two robots cannot be on the same tile at the same moment, except for the reward's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/notebook/3-dim-example.ipynb) for a detailed walkthrough.
 
 
 ![](img/img1.PNG)
@@ -28,7 +28,7 @@ grid = Grid(length = 3,
             collision_penalty = -1)
 ```
 
-Once the game settings are defined, a NashQLearning object is initialized with the desired hyperparameters and trained on the grid. Available strategies are 'random', 'greedy', and 'epsilon-greedy'.
+Once the game settings are defined, a NashQLearning object is initialized with the desired hyperparameters and trained on the grid.
 
 ```python
 from NashQLearn import NashQLearning
@@ -37,8 +37,8 @@ nashQ = NashQLearning(grid,
                       discount_factor = 0.7,
                       learning_rate = 0.7,
                       epsilon = 0.5,
-                      decision_strategy = 'epsilon-greedy')
-#Retrieve the updated Q tables after fitting the algorithm
+                      decision_strategy = 'epsilon-greedy') #Available strategies : 'random', 'greedy', and 'epsilon-greedy'
+#Retrieve the Q tables after fitting the algorithm
 Q0, Q1 = nashQ.fit(return_history = False)
 #Best path followed by each player given the values in the Q tables
 p0, p1 = nashQ.get_best_policy(Q0,Q1)
@@ -57,9 +57,7 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
       
 - python>=3.7
 - numpy
-- random
 - tqdm
-- collections
 - nashpy
               
 Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
