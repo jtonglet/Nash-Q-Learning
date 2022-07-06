@@ -10,14 +10,15 @@ from tqdm import tqdm
 
 
 class Player:
-
     def __init__(self, 
                  position = [0,0],
                  movements = ['left','right','up','down','stay']
                 ):
             '''
-            movements (list) : list of strings containing the possible movements. 
+            This class is a representation of a player.
+            
             position (list) : list of two integers giving the starting position coordinates of the player
+            movements (list) : list of strings containing the possible movements. 
             '''
         self.movements = movements
         self.position = position
@@ -40,11 +41,9 @@ class Player:
             new_position = self.position
         
         return new_position
-
    
 
 class Grid:
-
     def __init__(self,
                  length = 2, 
                  width = 2, 
@@ -146,7 +145,7 @@ class Grid:
             reward = self.collision_penalty
         elif movement == 'stay' and collision_detected:  #The player stayed but was percuted by another player
             reward = self.collision_penalty       
-        else: # The player formed a regular valid movement
+        else: # The player made a regular valid movement
             reward = 0
         return reward
 
@@ -217,7 +216,7 @@ class Grid:
                             new_state = [Player(state[0]).move(m0),Player(state[1]).move(m1)]                    
                     collision_detected = False
                     if (new_state[0] == state[1]  and new_state[1] == state[0] ) or new_state not in joint_states: 
-                        # There is a collision
+                         # There is a collision
                          new_state = state #Return to previous state
                          collision_detected = True
                 
@@ -248,8 +247,7 @@ class Grid:
         
         return q_tables0, q_tables1
 
-
-    
+  
 class  NashQLearning:
 
     def __init__(self,
@@ -261,6 +259,8 @@ class  NashQLearning:
                  epsilon = 0.5,
                  random_state = 42):       
         '''
+        This class represents an instance of the Nash Q-Learning algorithm
+        
         grid (Grid) : the game grid 
         learning rate (int) : the weighted importance given to the update of the Q-values compared to their current value
         max_iter (int) : max number of iterations of the algorithm
@@ -324,7 +324,6 @@ class  NashQLearning:
                         m0 = player0_movements[random.randrange(len(player0_movements))] #Random move
                         m1 = player1_movements[random.randrange(len(player1_movements))]
                     else:  #Select the movements corresponding to the nash equilibrium
-                        # print(np.where(greedy_equilibrium[0] == 1))
                         m0 = player0_movements[np.where(greedy_equilibrium[0] == 1)[0][0]]
                         m1 = player1_movements[np.where(greedy_equilibrium[1] == 1)[0][0]]          
                 else: #random
