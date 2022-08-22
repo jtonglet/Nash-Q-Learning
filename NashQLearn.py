@@ -1,6 +1,4 @@
-'''
-Implementation of the Nash Q Learning algorithm for simple games with two agents
-'''
+#Implementation of the Nash Q Learning algorithm for simple games with two agents
 
 import numpy as np
 import random
@@ -411,6 +409,5 @@ class  NashQLearning:
                 policy0 = 'model failed to converge to a policy'
                 policy1 = 'model failed to converge to a policy'
                 break        
-        print(current_state)
-            
+        print(current_state)            
         return policy0, policy1
