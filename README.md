@@ -3,6 +3,8 @@
 Implementation of the Nash Q-Learning  algorithm to solve games with two agents, as seen in the course Multiagent Systems @ PoliMi. 
 The algorithm was first introduced in the paper [**Nash q-learning for general-sum stochastic games**](https://dl.acm.org/doi/10.5555/945365.964288) (Hu, J., Wellman, M.P., 2003).
 
+Feel free to use for your own projects or contribute!
+
 ## Example
 
 Consider the following game where two robots need to reach the reward. One obstacle lies in the middle of the grid. The two robots cannot be on the same tile at the same moment, except for the reward's tile. See this [notebook](https://github.com/jtonglet/Nash_Q_Learning/blob/main/notebook/3-dim-example.ipynb) for a detailed walkthrough.
@@ -60,4 +62,4 @@ In this case, the joint optimal policy was found by the algorithm, as shown on t
 - tqdm
 - nashpy
               
-Nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
+The package nashpy is used to compute the Nash equilibrium for each stage game during the learning process.
